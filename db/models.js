@@ -49,7 +49,7 @@ const Job = db.define("job", {
     endDate: Sequelize.STRING
 });
 
-const Application = sequelize.define('application', {
+const Application = db.define('application', {
     id: {type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true},
     status: Sequelize.STRING,
     date: Sequelize.INTEGER,
