@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const models = require('./../../db/models').models;
 
-router.post('/add',function (req,res) {
+router.post('/add', function (req, res) {
     models.Job.create({
         title: req.body.title,
         description: req.body.description,
@@ -17,25 +17,24 @@ router.post('/add',function (req,res) {
     })
 });
 
-router.get('/:id',function (req,res) {
+router.get('/:id', function (req, res) {
+    let jobId = parseInt(req.params.id);
     models.Job.findOne({
-        where: {id: req.params.id}
+        where: {id: jobId}//changed from req.params.id to jobId
     }).then(function (job) {
-        if (!job) {
-            throw err;
-        }
         res.send(job);
     }).catch(function (err) {
-        res.send('Unknown Job');
+        console.log(err);
     })
 });
 
-router.post('/:id/apply',function (req,res) {
+router.post('/:id/apply', function (req, res) {
+    let jobId = parseInt(req.params.id);
     models.Application.create({
-        app: req.body.aapplication,
-        status: none,
+        app: req.body.application,
+        status: null,
         studentId: req.query.studentId,
-        jobId: req.params.id
+        jobId: jobId//changed from req.params.id to jobId
     }).then(function (Application) {
         //ask where to redirect once the application is submitted
     })

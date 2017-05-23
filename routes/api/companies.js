@@ -9,6 +9,9 @@ router.post('/add', function (req, res) {
      }
      */
     console.log(1);
+    if (req.body.name === "" || req.body.email === "" || req.body.password === "") {
+        res.send("Insufficient Details");
+    }
     console.log(req.body.name, req.body.email, req.body.password);
     password.pass2hash(req.body.password).then(function (hash) {
         models.Company.create({
@@ -38,7 +41,7 @@ router.get('/:id', function (req, res) {
     })
 });
 
-router.post('/edit/:id', function (req, res) {
+router.post('/:id/edit', function (req, res) {
 
     let companyId = parseInt(req.params.id);
     models.Company.findOne({

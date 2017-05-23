@@ -2,7 +2,7 @@ const router = require('express').Router();
 const models = require('./../../db/models').models;
 const password = require('./../../utils/password');
 
-router.post('/add',function (req,res) {
+router.post('/add', function (req, res) {
     password.pass2hash(req.body.password).then(function (hash) {
         models.Student.create({
             name: req.body.name,
@@ -14,11 +14,11 @@ router.post('/add',function (req,res) {
     })
 });
 
-router.get('/:id',function (req,res) {
+router.get('/:id', function (req, res) {
     models.Student.findOne({
         where: {id: req.params.id}
     }).then(function (student) {
-        if (!student) {
+        if (!student) {  //Remove this since if not found then in catch only
             throw err;
         }
         res.send(student);
@@ -27,7 +27,8 @@ router.get('/:id',function (req,res) {
     })
 });
 
-router.put('/:id/edit',function (req,res) {
+router.put('/:id/edit', function (req, res) {
+    let studentId = parseInt(req.params.id);
     models.Company.findOne({
         where: {id: req.params.id}
     }).then(function (student) {
@@ -54,7 +55,7 @@ router.put('/:id/edit',function (req,res) {
             projects: projects,
             trainings: trainings
         }, {
-            where: {id: req.params.id}
+            where: {id: studentId}//changed from req.params.id to studentId
         }).then(function (student) {
             res.redirect('/api/students/' + student.id);
         }).catch(function (error) {
@@ -68,9 +69,10 @@ router.put('/:id/edit',function (req,res) {
 
 });
 
-router.post('/:id/myApplications',function (req,res) {
-    models.Application.find({
-        where: {studentId: req.params.id},
+router.post('/:id/myApplications', function (req, res) {
+    let studentId=parseInt(req.params.id);
+    models.Application.findAll({
+        where: {studentId: studentId}, //changed from req.params.id to studentId
         include: models.Job
     }).then(function (applications) {
         res.send(applications);
@@ -79,12 +81,12 @@ router.post('/:id/myApplications',function (req,res) {
     })
 });
 
-router.get('/',function (req,res) {
-   models.Student.findAll().then(function (students) {
-       res.send(students);
-   }).catch(function (error) {
-       console.log(error);
-   })
+router.get('/', function (req, res) {
+    models.Student.findAll().then(function (students) { //Change from find to findAll
+        res.send(students);
+    }).catch(function (error) {
+        console.log(error);
+    })
 });
 
 module.exports = router;
