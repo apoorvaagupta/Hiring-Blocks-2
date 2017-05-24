@@ -18,9 +18,6 @@ router.get('/:id', function (req, res) {
     models.Student.findOne({
         where: {id: req.params.id}
     }).then(function (student) {
-        if (!student) {  //Remove this since if not found then in catch only
-            throw err;
-        }
         res.send(student);
     }).catch(function (err) {
         res.send('Unknown Student');
@@ -29,50 +26,37 @@ router.get('/:id', function (req, res) {
 
 router.put('/:id/edit', function (req, res) {
     let studentId = parseInt(req.params.id);
-    models.Company.findOne({
-        where: {id: req.params.id}
+    email = req.body.email;
+    contact = req.body.contact;
+    pincode = req.body.pincode;
+    education = req.body.education;
+    skills = req.body.skills;
+    languages = req.body.languages;
+    projects = req.body.projects;
+    trainings = req.body.trainings;
+
+    models.Student.update({
+        email: email,
+        contact: contact,
+        pincode: pincode,
+        education: education,
+        skills: skills,
+        languages: languages,
+        projects: projects,
+        trainings: trainings
+    }, {
+        where: {id: studentId}
     }).then(function (student) {
-        let firstname = req.body.firstname === "" ? student.firstname : req.body.firstname,
-            lastname = req.body.lastname === "" ? student.lastname : req.body.lastname,
-            email = req.body.email === "" ? student.email : req.body.email,
-            contact = req.body.contact === "" ? student.contact : req.body.contact,
-            pincode = req.body.pincode === "" ? student.pincode : req.body.pincode,
-            education = req.body.education === "" ? student.education : req.body.education,
-            skills = req.body.skills === "" ? company.skills : req.body.skills,
-            languages = req.body.languages === "" ? company.languages : req.body.languages,
-            projects = req.body.projects === "" ? company.projects : req.body.projects,
-            trainings = req.body.trainings === "" ? student.trainings : req.body.trainings;
-
-        models.Student.update({
-            firstname: firstname,
-            lastname: lastname,
-            email: email,
-            contact: contact,
-            pincode: pincode,
-            education: education,
-            skills: skills,
-            languages: languages,
-            projects: projects,
-            trainings: trainings
-        }, {
-            where: {id: studentId}//changed from req.params.id to studentId
-        }).then(function (student) {
-            res.redirect('/api/students/' + student.id);
-        }).catch(function (error) {
+        res.redirect('/api/students/' + student.id);
+    }).catch(function (error) {
             console.error(error)
-        });
-
-
-    }).catch(function (err) {
-        res.send('Unknown Student');
     });
-
 });
 
 router.post('/:id/myApplications', function (req, res) {
     let studentId=parseInt(req.params.id);
     models.Application.findAll({
-        where: {studentId: studentId}, //changed from req.params.id to studentId
+        where: {studentId: studentId},
         include: models.Job
     }).then(function (applications) {
         res.send(applications);
@@ -82,7 +66,7 @@ router.post('/:id/myApplications', function (req, res) {
 });
 
 router.get('/', function (req, res) {
-    models.Student.findAll().then(function (students) { //Change from find to findAll
+    models.Student.findAll().then(function (students) {
         res.send(students);
     }).catch(function (error) {
         console.log(error);
