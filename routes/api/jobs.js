@@ -14,13 +14,15 @@ router.post('/add', function (req, res) {
         endDate: req.body.endDate
     }).then(function (job) {
         res.redirect('/api/job/' + job.id);
+    }).catch(function (err) {
+        console.log(err);
     })
 });
 
 router.get('/:id', function (req, res) {
     let jobId = parseInt(req.params.id);
     models.Job.findOne({
-        where: {id: jobId}//changed from req.params.id to jobId
+        where: {id: jobId}
     }).then(function (job) {
         res.send(job);
     }).catch(function (err) {
@@ -34,14 +36,16 @@ router.post('/:id/apply', function (req, res) {
         app: req.body.application,
         status: null,
         studentId: req.query.studentId,
-        jobId: jobId//changed from req.params.id to jobId
+        jobId: jobId
     }).then(function (Application) {
         //ask where to redirect once the application is submitted
     })
 });
 
 router.get('/', function (req, res) {
-    models.Job.findAll({where: {jobType: req.query.status}}).then(function (jobs) {
+    models.Job.findAll({
+        where: {jobType: req.query.status}
+    }).then(function (jobs) {
         res.send(jobs);
     }).catch(function (err) {
         console.log(err);
