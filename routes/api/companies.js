@@ -32,9 +32,6 @@ router.get('/:id', function (req, res) {
 
 router.post('/:id/edit', function (req, res) {
     let companyId = parseInt(req.params.id);
-    // models.Company.findOne({
-    //     where: {id: companyId}
-    // }).then(function (company) {
     //     let name = req.body.name === "" ? company.name : req.body.name,
     //         email = req.body.email === "" ? company.email : req.body.email,
     //         website = req.body.website === "" ? company.website : req.body.website,
@@ -55,12 +52,7 @@ router.post('/:id/edit', function (req, res) {
     //         where: {id: companyId}
     //     }).then(function (company) {
     //         res.redirect('/api/companies/' + company.id);
-    //     }).catch(function (error) {
-    //         console.error(error)
-    //     });
-    //
-    //
-    // }).catch(function (err) {
+    //     }).catch(function (err) {
     //     res.send('Unknown Company or unauthorized request');
     // });
 

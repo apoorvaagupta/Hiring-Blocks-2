@@ -20,6 +20,7 @@ router.get('/:id', function (req, res) {
     }).then(function (student) {
         res.send(student);
     }).catch(function (err) {
+        console.log(err);
         res.send('Unknown Student');
     })
 });
@@ -49,12 +50,12 @@ router.put('/:id/edit', function (req, res) {
     }).then(function (student) {
         res.redirect('/api/students/' + student.id);
     }).catch(function (error) {
-            console.error(error)
+        console.error(error)
     });
 });
 
 router.post('/:id/myApplications', function (req, res) {
-    let studentId=parseInt(req.params.id);
+    let studentId = parseInt(req.params.id);
     models.Application.findAll({
         where: {studentId: studentId},
         include: models.Job

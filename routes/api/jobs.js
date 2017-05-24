@@ -34,7 +34,7 @@ router.post('/:id/apply', function (req, res) {
     let jobId = parseInt(req.params.id);
     models.Application.create({
         app: req.body.application,
-        status: null,
+        status: "none",
         studentId: req.query.studentId,
         jobId: jobId
     }).then(function (Application) {
