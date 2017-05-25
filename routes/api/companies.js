@@ -23,7 +23,7 @@ router.get('/:id', function (req, res) {
     models.Company.findOne({
         where: {id: companyId}
     }).then(function (company) {
-        res.send(company); //Ask if user or user.dataValues
+        res.send(company.get()); //Ask if user or user.dataValues
     }).catch(function (err) {
         console.log(err);
         res.send('Unknown Company or unauthorized request');
@@ -41,7 +41,7 @@ router.post('/:id/edit', function (req, res) {
     //         repNumber = req.body.repNumber === "" ? company.repNumber : req.body.repNumber;
     //
     //     models.Company.update({
-    //         name: name,
+    //         name: req.body.name ,
     //         email: email,
     //         website: website,
     //         locations: locations,
@@ -71,11 +71,13 @@ router.post('/:id/edit', function (req, res) {
         repName: repName,
         repNumber: repNumber
     }, {
-        where: {id: companyId}
-    }).then(function (company) {
-        res.redirect('/api/companies/' + company.id);
+        where: {id: req.params.id},
+        returning: true
+    }).then(function (rows) {
+        const company = rows[1][0].get();
+        res.send(company);
     }).catch(function (error) {
-        console.error(error)
+        console.log(error);
     });
 
 });

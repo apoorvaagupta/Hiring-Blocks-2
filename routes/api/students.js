@@ -25,7 +25,7 @@ router.get('/:id', function (req, res) {
     })
 });
 
-router.put('/:id/edit', function (req, res) {
+router.post('/:id/edit', function (req, res) {
     let studentId = parseInt(req.params.id);
     email = req.body.email;
     contact = req.body.contact;
