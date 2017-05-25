@@ -37,8 +37,11 @@ router.post('/:id/apply', function (req, res) {
         status: "none",
         studentId: req.query.studentId,
         jobId: jobId
-    }).then(function (Application) {
-        //ask where to redirect once the application is submitted
+    }).then(function (application) {
+        res.send(application)
+    }).catch(function (err) {
+        console.log(err);
+        res.send("Error in submitting the application")
     })
 });
 
@@ -46,7 +49,7 @@ router.get('/', function (req, res) {
     models.Job.findAll({
         where: {jobType: req.query.status}
     }).then(function (jobs) {
-        res.send(jobs);
+        res.send(jobs);   //.get() does not work on array
     }).catch(function (err) {
         console.log(err);
     })
