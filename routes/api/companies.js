@@ -57,38 +57,38 @@ router.post('/:id/edit', function (req, res) {
 
 });
 
-router.post('/:id/jobs', function (req, res) {
+router.get('/:id/jobs', function (req, res) {
     let companyId = parseInt(req.params.id);
     models.Job.findAll({
         where: {companyId: companyId}
     }).then(function (jobs) {
-        res.send(jobs.get());
+        console.log(jobs);  // .get does not works on array
+        res.send(jobs);
     }).catch(function (err) {
         console.log(err);
         res.send("Unknown company or unauthorized access");
     })
 });
 
-// Ask sir : can the company directly see all of its applications?
 
-// router.post('/:id/myApplications', function (req, res) {
-//     let companyId = parseInt(req.params.id);
-//     models.Application.findAll({
-//         where: {companyId: companyId},
-//         include: models.Student
-//     }).then(function (applications) {
-//         res.send(applications);
-//     }).catch(function (err) {
-//         console.log(err);
-//         res.send("Unknown company or unauthorized access");
-//     })
-// });
+router.get('/:id/applications', function (req, res) {
+    let companyId = parseInt(req.params.id);
+    models.Application.findAll({
+        where: {companyId: companyId},
+        include: models.Student           // Ask how to do jobs.companyId===companyId
+    }).then(function (applications) {
+        res.send(applications);     //.get() does not work on array
+    }).catch(function (err) {
+        console.log(err);
+        res.send("Unknown company or unauthorized access");
+    })
+});
 
 router.get('/', function (req, res) {
     models.Company.findAll().then(function (companies) {
-        res.send(companies);
-    }).catch(function (error) {
-        console.log(error);
+        res.send(companies);  //.get() does not work on array
+    }).catch(function (err) {
+        console.log(err);
     })
 });
 

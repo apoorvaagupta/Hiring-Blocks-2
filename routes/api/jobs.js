@@ -13,7 +13,7 @@ router.post('/add', function (req, res) {
         startDate: req.body.startDate,
         endDate: req.body.endDate
     }).then(function (job) {
-        res.redirect('/api/job/' + job.id);
+        res.send(job);
     }).catch(function (err) {
         console.log(err);
     })
