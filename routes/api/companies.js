@@ -62,7 +62,7 @@ router.get('/:id/jobs', function (req, res) {
     models.Job.findAll({
         where: {companyId: companyId}
     }).then(function (jobs) {
-        console.log(jobs);  // .get does not works on array
+        console.log(jobs);  // .get does not work on array
         res.send(jobs);
     }).catch(function (err) {
         console.log(err);
@@ -74,7 +74,7 @@ router.get('/:id/jobs', function (req, res) {
 router.get('/:id/applications', function (req, res) {
     let companyId = parseInt(req.params.id);
     models.Application.findAll({
-        where: {companyId: companyId},
+        where: {companyId: companyId},    // will need to make a relation between the company and application as well
         include: models.Student           // Ask how to do jobs.companyId===companyId
     }).then(function (applications) {
         res.send(applications);     //.get() does not work on array
