@@ -14,10 +14,11 @@ const Student = db.define('student', {
     password: Sequelize.STRING,
     contact: Sequelize.BIGINT,
     pincode: Sequelize.INTEGER,
+    // updation of all?
     education: Sequelize.STRING,
-    skills: Sequelize.STRING,
+    skills: Sequelize.ARRAY(Sequelize.STRING),
     languages: Sequelize.STRING,
-    projects: Sequelize.STRING,
+    projects: Sequelize.STRING,         //What if i want to add a single skill
     trainings: Sequelize.STRING
     // cbStudent:{type:Sequelize.BOOLEAN,defaultValue:false},
     // cbCourses:Sequelize.STRING
