@@ -3,13 +3,17 @@ const models = require('./../../db/models').models;
 const password = require('./../../utils/password');
 
 router.post('/add', function (req, res) {
+    if (req.body.firstname === "" || req.body.lastname === "" || req.body.email === "" || req.body.password === "") {
+        res.send("Insufficient Details");
+    }
     password.pass2hash(req.body.password).then(function (hash) {
         models.Student.create({
-            name: req.body.name,
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
             email: req.body.email,
             password: hash
         }).then(function (student) {
-            res.redirect('/api/students/' + student.id);
+            res.send(student);
         })
     })
 });
@@ -48,7 +52,7 @@ router.post('/:id/edit', function (req, res) {
     }, {
         where: {id: studentId}
     }).then(function (student) {
-        res.redirect('/api/students/' + student.id);
+        res.send(student);
     }).catch(function (error) {
         console.error(error)
     });
